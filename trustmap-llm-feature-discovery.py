@@ -12,8 +12,8 @@ from dotenv import load_dotenv
 from openai import OpenAI, APIConnectionError, APIStatusError, APITimeoutError
 
 PROJECT_DIR = Path(__file__).resolve().parent
-DEFAULT_CSV = PROJECT_DIR / "data" / "restaurant_sponsored_reviews.csv"
-DEFAULT_OUTPUT = PROJECT_DIR / "outputs" / "positive_responses"
+DEFAULT_CSV = PROJECT_DIR / "data" / "restaurant_primary_secondary_irrelevant_random_available_20260929.csv"
+DEFAULT_OUTPUT = PROJECT_DIR / "outputs" / "negative_responses"
 
 SYSTEM_PROMPT = """你是協助學術研究進行文本分析的研究助理。
 請使用臺灣繁體中文（zh-TW）。
@@ -372,11 +372,11 @@ def main():
             "original_text": text_by_id[item["review_id"]],
             "response": item["response"],
         })
-    pd.DataFrame(csv_rows, columns=["review_id", "original_text", "response"]).to_csv(run_dir / "positive_responses.csv", index=False, encoding="utf-8-sig", quoting=csv.QUOTE_MINIMAL)
+    pd.DataFrame(csv_rows, columns=["review_id", "original_text", "response"]).to_csv(run_dir / "negative_responses.csv", index=False, encoding="utf-8-sig", quoting=csv.QUOTE_MINIMAL)
 
     print(f"\n分析結束：成功 {len(all_analyses)}/{len(rows)} 篇；輸出已保存。")
     print(f"JSON：{run_dir / 'positive_responses.json'}")
-    print(f"CSV ：{run_dir / 'positive_responses.csv'}")
+    print(f"CSV ：{run_dir / 'negative_responses.csv'}")
     if failed_batches:
         print(f"狀態：部分完成，仍有 {len(failed_batches)} 個批次失敗；詳見 failed_batches.json。")
     else:
